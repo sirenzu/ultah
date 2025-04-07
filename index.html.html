@@ -1,0 +1,265 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Selamat Ulang Tahun, Malika!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+      overflow: hidden;
+    }
+
+    .cover {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 9999;
+      transition: opacity 1s ease;
+    }
+
+    .cover h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #ffffff;
+      background-color: rgba(255, 111, 145, 0.8);
+      padding: 10px 20px;
+      border-radius: 12px;
+    }
+
+    .open-btn {
+      padding: 12px 24px;
+      font-size: 1rem;
+      background: #ff6f91;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .open-btn:hover {
+      background: #ff4070;
+      transform: scale(1.05);
+    }
+
+    .container {
+      text-align: center;
+      padding: 100px 20px 60px;
+      color: #fff;
+      display: none;
+    }
+
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      color: #ffecec;
+    }
+
+    #typing-text {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      min-height: 60px;
+    }
+
+    button, .wa-link {
+      padding: 12px 24px;
+      font-size: 1rem;
+      background: #fff;
+      color: #ff6f91;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    button:hover, .wa-link:hover {
+      background: #ffe4ec;
+      transform: scale(1.05);
+    }
+
+    .balloons, .fireworks {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .balloon {
+      position: absolute;
+      bottom: -150px;
+      animation: float 8s infinite ease-in;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-110vh); opacity: 0; }
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="cover" id="cover">
+    <h1>Klik untuk buka kejutan 🎁</h1>
+    <button class="open-btn" onclick="openSurprise()">Buka!</button>
+  </div>
+
+  <canvas id="fireworks"></canvas>
+  <div class="balloons"></div>
+  <div class="container" id="main-content">
+    <h1>Selamat Ulang Tahun 🎉</h1>
+    <h2>Yang ke-14, Malika Al Ghassani!</h2>
+    <div id="typing-text"></div>
+    <button onclick="nextMessage()">Lanjut</button>
+    <br><br>
+    <a class="wa-link" href="https://wa.me/628973178104?text=mau%20hadiah" target="_blank" style="display:none" id="wa-link">Balas via WhatsApp 💌</a>
+  </div>
+
+  <audio id="bg-sound" preload="auto">
+    <source src="https://www.fesliyanstudios.com/play-mp3/387" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const messages = [
+      " Hari ini hari yang spesial banget...",
+      " karena seseorang yang luar biasa lahir di hari ini 💖",
+      " lu hebat bisa ngadepin ortu lu sampe sekarang ✨",
+      " semoga semua mimpi lu tercapai ya, Malika! 💫",
+      " selamat ulang tahun yang ke-14, Malika Al Ghassani! 🎂"
+
+    ];
+
+    let index = 0;
+    let charIndex = 0;
+    let isTyping = false;
+
+    function typeMessage() {
+      if (charIndex < messages[index].length) {
+        document.getElementById("typing-text").innerHTML += messages[index].charAt(charIndex);
+        charIndex++;
+        setTimeout(typeMessage, 50);
+      } else {
+        isTyping = false;
+        if(index >= messages.length - 1) {
+          document.getElementById("wa-link").style.display = "inline-block";
+        }
+      }
+    }
+
+    function nextMessage() {
+      if (isTyping) return;
+      if (index < messages.length) {
+        document.getElementById("typing-text").innerHTML = "";
+        charIndex = 0;
+        isTyping = true;
+        typeMessage();
+        index++;
+      } else {
+        document.getElementById("typing-text").innerHTML = "❤️❤️❤️";
+        document.getElementById("wa-link").style.display = "inline-block";
+      }
+    }
+
+    function openSurprise() {
+      document.getElementById("cover").style.opacity = "0";
+      setTimeout(() => {
+        document.getElementById("cover").style.display = "none";
+        document.getElementById("main-content").style.display = "block";
+        document.getElementById("bg-sound").play();
+        nextMessage();
+      }, 1000);
+    }
+
+    function createBalloon() {
+      const balloon = document.createElement("div");
+      balloon.classList.add("balloon");
+      balloon.style.left = Math.random() * 100 + "vw";
+      balloon.style.width = 30 + Math.random() * 20 + "px";
+      balloon.style.height = 40 + Math.random() * 30 + "px";
+      balloon.style.background = `hsl(${Math.random() * 360}, 70%, 70%)`;
+      document.querySelector(".balloons").appendChild(balloon);
+      setTimeout(() => balloon.remove(), 8000);
+    }
+    setInterval(createBalloon, 500);
+
+    const canvas = document.getElementById("fireworks");
+    const ctx = canvas.getContext("2d");
+    let particles = [];
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    function createFirework() {
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height / 2;
+      const count = 100;
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x,
+          y,
+          radius: 2 + Math.random() * 2,
+          color: `hsl(${Math.random() * 360}, 100%, 70%)`,
+          angle: Math.random() * 2 * Math.PI,
+          speed: Math.random() * 5 + 2,
+          alpha: 1
+        });
+      }
+    }
+
+    function animateFireworks() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p, i) => {
+        p.x += Math.cos(p.angle) * p.speed;
+        p.y += Math.sin(p.angle) * p.speed;
+        p.alpha -= 0.01;
+        if (p.alpha <= 0) particles.splice(i, 1);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      });
+      requestAnimationFrame(animateFireworks);
+    }
+
+    setInterval(createFirework, 1500);
+    animateFireworks();
+  </script>
+</body>
+</html>
