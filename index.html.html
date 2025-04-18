@@ -41,11 +41,12 @@
       border-radius: 10px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: start;
       align-items: center;
       text-align: center;
       color: #333;
-      padding: 30px;
+      padding: 30px 20px;
+      box-sizing: border-box;
     }
 
     .flipped {
@@ -56,43 +57,33 @@
       font-family: 'Pacifico', cursive;
       font-size: 2.5rem;
       margin-bottom: 10px;
-      color: #fff;
     }
 
     .page h2 {
       font-size: 1.2rem;
       font-weight: 400;
-      color: #fff;
     }
 
     .typing {
-  font-size: 1.2rem;
-  margin-top: 20px;
-  background-color: rgba(0, 0, 0, 0.4);
-  padding: 10px 20px;
-  border-radius: 10px;
-  z-index: 2;
-  max-width: 90%;
-  text-align: center;
-  word-wrap: break-word;
-  white-space: normal;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-self: center;
-}
-
+      font-size: 1.2rem;
+      margin-top: 20px;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 10px 20px;
+      border-radius: 10px;
+      max-width: 90%;
+      color: #fff;
+    }
 
     .page img {
-      max-width: 300px;
+      max-width: 250px;
       border-radius: 15px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      margin-top: 20px;
+      margin: 25px 0;
     }
 
     .btn-prev, .btn-next, .wa-link {
-      margin: 15px 10px 0;
+      display: block;
+      margin: 10px auto;
       padding: 12px 24px;
       border: none;
       background: #ff6f91;
@@ -111,8 +102,10 @@
 
     .controls {
       display: flex;
-      gap: 20px;
+      flex-direction: column;
+      gap: 10px;
       justify-content: center;
+      margin-top: auto;
     }
 
     .emoticons {
@@ -132,6 +125,15 @@
     .emoticons span {
       margin: 5px;
     }
+
+    .header-wrap {
+  padding: 12px 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  color: #fff;
+  text-shadow: 2px 2px 4px #000; /* SHADOW DI SETIAP HURUF */
+}
+
 
     @media (max-width: 768px) {
       .scene {
@@ -165,25 +167,33 @@ const fireworkSound = new Audio('https://www.soundjay.com/button/sounds/beep-07.
 
 const messages = [
   "Hari ini hari yang spesial banget...",
-  "karena seseorang yang luar biasa lahir di hari ini 💖",
-  "lu hebat bisa ngadepin ortu lu sampe sekarang ✨",
-  "semoga semua mimpi lu tercapai ya, Malika! 💫",
-  "selamat ulang tahun yang ke-15, Malika Al Ghassani! 🎂",
-  "Terima kasih udah jadi kamu yang sekarang. ❤️<br>Kamu pantas dapet segalanya yang indah 🌟"
+  "Karena seseorang yang luar biasa lahir di hari ini ",
+  "gw tau banget, hidup lu nggak selalu gampang. Lu tumbuh di rumah yang aturannya ketat, semua harus sesuai ekspektasi, harus nurut, harus kuat padahal di dalam hati lu kadang cuma pengen didengar, dimengerti, dan punya ruang buat jadi diri sendiri.",
+  "Lu keren banget. Lu bisa berdiri tegak di tengah tekanan yang kayak gitu. Lu bisa tetap jadi diri lu yang baik, yang kuat, yang gak gampang nyerah",
+  "Gw tau kadang lu pengen nyerah, pengen kabur dari semuanya, pengen hidup yang lebih bebas dan itu wajar, karena lu juga manusia. Tapi justru dari semua itu, lu tumbuh jadi orang yang luar biasa. Lu nggak keras kepala, tapi lu punya prinsip. Lu nggak rebel, tapi lu punya pendirian. Dan itu powerful banget.",
+  "dan semoga suatu hari nanti, lu bisa punya hidup yang bener-bener lu pengen. Yang bisa lu atur sendiri, yang bisa lu isi dengan ketenangan, kebahagiaan. kalo mau hadiahnya pencet tombol yg dibawah",
 ];
 
 const bgColors = [
-  "linear-gradient(to right, #fbc2eb, #a6c1ee)",
-  "linear-gradient(to right, #ffecd2, #fcb69f)",
-  "linear-gradient(to right, #d4fc79, #96e6a1)",
-  "linear-gradient(to right, #fbc2eb, #f7b7d1)",
-  "linear-gradient(to right, #f6d365, #fda085)",
-  "linear-gradient(to right, #e0c3fc, #8ec5fc)"
+  "#fbc2eb",  // pink muda
+  "#fcb69f",  // peach
+  "#d4fc79",  // hijau muda
+  "#f7b7d1",  // pink soft
+  "#fda085",  // orange lembut
+  "#8ec5fc"   // biru langit
 ];
 
-const emoticons = [
-  "🎉", "🎂", "🎁", "💖", "🎊", "✨"
+const headerBgs = [
+  "#fbc2eb",
+  "#fcb69f",
+  "#d4fc79",
+  "#f7b7d1",
+  "#fda085",
+  "#8ec5fc"
 ];
+
+
+const emoticons = ["🎉", "🎂", "🎁", "💖", "🎊", "✨"];
 
 const scene = document.getElementById("scene");
 let currentPage = 0;
@@ -193,7 +203,7 @@ messages.forEach((msg, i) => {
   const page = document.createElement("div");
   page.classList.add("page");
   page.style.zIndex = messages.length - i;
-  page.style.background = bgColors[i];
+  page.style.backgroundColor = bgColors[i];
 
   const emoteGrid = document.createElement("div");
   emoteGrid.classList.add("emoticons");
@@ -204,13 +214,21 @@ messages.forEach((msg, i) => {
   }
   page.appendChild(emoteGrid);
 
-  if (i === 0) {
+  // Tambahkan header di semua kecuali halaman terakhir
+  if (i !== messages.length - 1) {
+    const headerWrap = document.createElement("div");
+    headerWrap.classList.add("header-wrap");
+    headerWrap.style.backgroundColor = headerBgs[i];
+
     const h1 = document.createElement("h1");
     h1.textContent = "Selamat Ulang Tahun 🎉";
+
     const h2 = document.createElement("h2");
-    h2.textContent = "Malika Al Ghassani";
-    page.appendChild(h1);
-    page.appendChild(h2);
+    h2.textContent = "Malika Al Ghassani yang ke-15";
+
+    headerWrap.appendChild(h1);
+    headerWrap.appendChild(h2);
+    page.appendChild(headerWrap);
   }
 
   const textDiv = document.createElement("div");
@@ -226,9 +244,9 @@ messages.forEach((msg, i) => {
 
     const link = document.createElement("a");
     link.classList.add("wa-link");
-    link.href = "https://wa.me/628973178104?text=mau%20hadiah%20lampu%20tidur";
+    link.href = "https://wa.me/628973178104?text=mau";
     link.target = "_blank";
-    link.textContent = "Balas via WhatsApp 💌";
+    link.textContent = "pencet kalo mau";
     page.appendChild(link);
   }
 
