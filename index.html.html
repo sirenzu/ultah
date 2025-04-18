@@ -10,7 +10,7 @@
       margin: 0;
       padding: 0;
       font-family: 'Poppins', sans-serif;
-      background: #ffe;
+      background-color: #ffe; /* Background color */
       overflow: hidden;
       display: flex;
       justify-content: center;
@@ -24,6 +24,11 @@
       position: relative;
       max-width: 595px;
       max-height: 842px;
+      background-image: url('https://i.ibb.co/v1kg3gs/cute-background.jpg'); /* Ganti dengan URL gambar imut */
+      background-size: cover;
+      background-position: center;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
 
     .page {
@@ -36,7 +41,6 @@
       transform-style: preserve-3d;
       transition: transform 1s ease-in-out;
       border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
       padding: 40px;
       display: flex;
       flex-direction: column;
@@ -44,7 +48,6 @@
       align-items: center;
       text-align: center;
       color: #333;
-      background: white;
       z-index: 1;
     }
 
@@ -57,17 +60,20 @@
       font-family: 'Pacifico', cursive;
       font-size: 2.5rem;
       margin-bottom: 10px;
+      color: #fff;
     }
 
     .page h2 {
       font-size: 1.2rem;
       font-weight: 400;
+      color: #fff;
     }
 
     .typing {
       font-size: 1.2rem;
       min-height: 60px;
       margin-top: 20px;
+      color: #fff;
     }
 
     .page img {
@@ -100,51 +106,9 @@
       gap: 20px;
     }
 
-    .anim {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      z-index: -1;
-    }
-
-    /* CSS Animations for effects */
-    .bubbles::before {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 80%);
-      animation: bubbles 20s linear infinite;
-      opacity: 0.2;
-    }
-
-    .hearts::before {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle, rgba(255, 0, 0, 0.3) 0%, rgba(255, 0, 0, 0.1) 100%);
-      animation: hearts 25s linear infinite;
-      opacity: 0.2;
-    }
-
-    @keyframes bubbles {
-      0% { background-position: 0 100%; }
-      100% { background-position: 0 0; }
-    }
-
-    @keyframes hearts {
-      0% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.2); opacity: 0.5; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
     @media (max-width: 768px) {
       body {
-        padding: 10px;
+        padding: 0;
       }
 
       .scene {
@@ -191,10 +155,6 @@ messages.forEach((msg, i) => {
   const page = document.createElement("div");
   page.classList.add("page");
   page.style.zIndex = messages.length - i;
-
-  const anim = document.createElement("div");
-  anim.classList.add("anim", bgClasses[i]);
-  page.appendChild(anim);
 
   if (i === 0) {
     const h1 = document.createElement("h1");
