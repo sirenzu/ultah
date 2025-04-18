@@ -19,17 +19,19 @@
     }
 
     .scene {
-      width: 595px;
-      height: 842px;
+      width: 90%;
+      height: 90%;
       position: relative;
+      max-width: 595px;
+      max-height: 842px;
     }
 
     .page {
       position: absolute;
       top: 0;
       left: 0;
-      width: 595px;
-      height: 842px;
+      width: 100%;
+      height: 100%;
       backface-visibility: hidden;
       transform-style: preserve-3d;
       transition: transform 1s ease-in-out;
@@ -108,71 +110,62 @@
       z-index: -1;
     }
 
-    .bubbles::before, .hearts::before, .stars::before, .confetti::before, .lights::before {
+    /* CSS Animations for effects */
+    .bubbles::before {
       content: '';
       position: absolute;
       width: 100%;
       height: 100%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 80%);
+      animation: bubbles 20s linear infinite;
       opacity: 0.2;
-      background-repeat: repeat;
-      z-index: -1;
-    }
-
-    .bubbles::before {
-      background-image: url('https://i.ibb.co/zZx1ySm/bubbles-big.png');
-      background-size: 200px;
-      background-position: center;
-      animation: float 20s linear infinite;
     }
 
     .hearts::before {
-      background-image: url('https://i.ibb.co/kDyJp2C/hearts-big.png');
-      background-size: 150px;
-      background-position: center;
-      animation: float 25s linear infinite;
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255, 0, 0, 0.3) 0%, rgba(255, 0, 0, 0.1) 100%);
+      animation: hearts 25s linear infinite;
+      opacity: 0.2;
     }
 
-    .stars::before {
-      background-image: url('https://i.ibb.co/hVdqssz/stars-bg.png');
-      background-size: 120px;
-      background-position: center;
-      animation: spin 30s linear infinite;
-    }
-
-    .confetti::before {
-      background-image: url('https://i.ibb.co/T0XNdGP/confetti-bg.png');
-      background-size: 180px;
-      background-position: center;
-      animation: fall 15s linear infinite;
-    }
-
-    .lights::before {
-      background-image: url('https://i.ibb.co/k6tp4gv/lights-bg.png');
-      background-size: 150px;
-      background-position: center;
-      animation: blink 2s infinite alternate;
-    }
-
-    @keyframes float {
+    @keyframes bubbles {
       0% { background-position: 0 100%; }
       100% { background-position: 0 0; }
     }
 
-    @keyframes spin {
-      0% { background-position: 0 0; }
-      100% { background-position: 100% 100%; }
+    @keyframes hearts {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.5; }
+      100% { transform: scale(1); opacity: 1; }
     }
 
-    @keyframes fall {
-      0% { background-position: 0 -100%; }
-      100% { background-position: 0 100%; }
-    }
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
 
-    @keyframes blink {
-      0% { opacity: 0.4; }
-      100% { opacity: 1; }
-    }
+      .scene {
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        max-height: none;
+      }
 
+      .page {
+        padding: 20px;
+      }
+
+      .page h1 {
+        font-size: 1.8rem;
+      }
+
+      .page h2 {
+        font-size: 1rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -189,7 +182,7 @@ const messages = [
   "Terima kasih udah jadi kamu yang sekarang. ❤️<br>Kamu pantas dapet segalanya yang indah 🌟"
 ];
 
-const bgClasses = ["bubbles", "hearts", "stars", "confetti", "lights", "confetti"];
+const bgClasses = ["bubbles", "hearts", "bubbles", "hearts", "bubbles"];
 const scene = document.getElementById("scene");
 let currentPage = 0;
 const pages = [];
