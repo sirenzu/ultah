@@ -39,13 +39,13 @@
       transform-style: preserve-3d;
       transition: transform 3s ease-in-out;
       border-radius: 10px;
-      padding: 40px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
       color: #333;
+      padding: 30px;
     }
 
     .flipped {
@@ -66,14 +66,23 @@
     }
 
     .typing {
-      font-size: 1.2rem;
-      min-height: 60px;
-      margin-top: 20px;
-      color: #fff;
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 10px;
-      border-radius: 10px;
-    }
+  font-size: 1.2rem;
+  margin-top: 20px;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 10px 20px;
+  border-radius: 10px;
+  z-index: 2;
+  max-width: 90%;
+  text-align: center;
+  word-wrap: break-word;
+  white-space: normal;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+}
+
 
     .page img {
       max-width: 300px;
@@ -103,23 +112,28 @@
     .controls {
       display: flex;
       gap: 20px;
+      justify-content: center;
     }
 
     .emoticons {
-      font-size: 5rem;
+      font-size: 2rem;
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: -1;
-      opacity: 0.1;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      align-content: space-around;
+      opacity: 0.2;
+    }
+
+    .emoticons span {
+      margin: 5px;
     }
 
     @media (max-width: 768px) {
-      body {
-        padding: 0;
-      }
-
       .scene {
         width: 100%;
         height: 100%;
@@ -146,131 +160,135 @@
 <div class="scene" id="scene"></div>
 
 <script>
-  const paperSound = new Audio('https://www.soundjay.com/button/beep-07.wav');
-  const fireworkSound = new Audio('https://www.soundjay.com/button/sounds/beep-07.wav');
+const paperSound = new Audio('https://www.soundjay.com/button/beep-07.wav');
+const fireworkSound = new Audio('https://www.soundjay.com/button/sounds/beep-07.wav');
 
-  const messages = [
-    "Hari ini hari yang spesial banget...",
-    "karena seseorang yang luar biasa lahir di hari ini 💖",
-    "lu hebat bisa ngadepin ortu lu sampe sekarang ✨",
-    "semoga semua mimpi lu tercapai ya, Malika! 💫",
-    "selamat ulang tahun yang ke-15, Malika Al Ghassani! 🎂",
-    "Terima kasih udah jadi kamu yang sekarang. ❤️<br>Kamu pantas dapet segalanya yang indah 🌟"
-  ];
+const messages = [
+  "Hari ini hari yang spesial banget...",
+  "karena seseorang yang luar biasa lahir di hari ini 💖",
+  "lu hebat bisa ngadepin ortu lu sampe sekarang ✨",
+  "semoga semua mimpi lu tercapai ya, Malika! 💫",
+  "selamat ulang tahun yang ke-15, Malika Al Ghassani! 🎂",
+  "Terima kasih udah jadi kamu yang sekarang. ❤️<br>Kamu pantas dapet segalanya yang indah 🌟"
+];
 
-  const bgColors = [
-    "linear-gradient(to right, #fbc2eb, #a6c1ee)",
-    "linear-gradient(to right, #ffecd2, #fcb69f)",
-    "linear-gradient(to right, #d4fc79, #96e6a1)",
-    "linear-gradient(to right, #fbc2eb, #f7b7d1)",
-    "linear-gradient(to right, #f6d365, #fda085)",
-    "linear-gradient(to right, #c1dfc4, #deecdd)"
-  ];
+const bgColors = [
+  "linear-gradient(to right, #fbc2eb, #a6c1ee)",
+  "linear-gradient(to right, #ffecd2, #fcb69f)",
+  "linear-gradient(to right, #d4fc79, #96e6a1)",
+  "linear-gradient(to right, #fbc2eb, #f7b7d1)",
+  "linear-gradient(to right, #f6d365, #fda085)",
+  "linear-gradient(to right, #e0c3fc, #8ec5fc)"
+];
 
-  const emoticons = ["🎉", "🎂", "🎁", "💖", "🎊", "🌟"];
+const emoticons = [
+  "🎉", "🎂", "🎁", "💖", "🎊", "✨"
+];
 
-  const scene = document.getElementById("scene");
-  let currentPage = 0;
-  const pages = [];
+const scene = document.getElementById("scene");
+let currentPage = 0;
+const pages = [];
 
-  messages.forEach((msg, i) => {
-    const page = document.createElement("div");
-    page.classList.add("page");
-    page.style.zIndex = messages.length - i;
-    page.style.background = bgColors[i];
+messages.forEach((msg, i) => {
+  const page = document.createElement("div");
+  page.classList.add("page");
+  page.style.zIndex = messages.length - i;
+  page.style.background = bgColors[i];
 
-    const emoticonDiv = document.createElement("div");
-    emoticonDiv.classList.add("emoticons");
-    emoticonDiv.textContent = emoticons[i];
-    page.appendChild(emoticonDiv);
+  const emoteGrid = document.createElement("div");
+  emoteGrid.classList.add("emoticons");
+  for (let j = 0; j < 50; j++) {
+    const emote = document.createElement("span");
+    emote.textContent = emoticons[i % emoticons.length];
+    emoteGrid.appendChild(emote);
+  }
+  page.appendChild(emoteGrid);
 
-    if (i === 0) {
-      const h1 = document.createElement("h1");
-      h1.textContent = "Selamat Ulang Tahun 🎉";
-      const h2 = document.createElement("h2");
-      h2.textContent = "Malika Al Ghassani";
-      page.appendChild(h1);
-      page.appendChild(h2);
-    }
-
-    const textDiv = document.createElement("div");
-    textDiv.classList.add("typing");
-    textDiv.id = `typing-${i}`;
-    page.appendChild(textDiv);
-
-    if (i === messages.length - 1) {
-      const img = document.createElement("img");
-      img.src = "lampu.jpg";
-      img.alt = "Lampu Lucu";
-      page.appendChild(img);
-
-      const link = document.createElement("a");
-      link.classList.add("wa-link");
-      link.href = "https://wa.me/628973178104?text=mau%20hadiah%20lampu%20tidur";
-      link.target = "_blank";
-      link.textContent = "Balas via WhatsApp 💌";
-      page.appendChild(link);
-    }
-
-    const controls = document.createElement("div");
-    controls.classList.add("controls");
-
-    if (i > 0) {
-      const btnPrev = document.createElement("button");
-      btnPrev.classList.add("btn-prev");
-      btnPrev.textContent = "⬅️ Kembali";
-      btnPrev.onclick = () => goBack(i);
-      controls.appendChild(btnPrev);
-    }
-
-    if (i < messages.length - 1) {
-      const btnNext = document.createElement("button");
-      btnNext.classList.add("btn-next");
-      btnNext.textContent = "Lanjut ➡️";
-      btnNext.onclick = () => flipPage(i);
-      controls.appendChild(btnNext);
-    }
-
-    page.appendChild(controls);
-    scene.appendChild(page);
-    pages.push(page);
-  });
-
-  function typeText(index) {
-    const target = document.getElementById(`typing-${index}`);
-    const message = messages[index];
-    let i = 0;
-    target.innerHTML = "";
-
-    function type() {
-      if (i < message.length) {
-        target.innerHTML += message.charAt(i);
-        i++;
-        setTimeout(type, 40);
-      }
-    }
-
-    type();
+  if (i === 0) {
+    const h1 = document.createElement("h1");
+    h1.textContent = "Selamat Ulang Tahun 🎉";
+    const h2 = document.createElement("h2");
+    h2.textContent = "Malika Al Ghassani";
+    page.appendChild(h1);
+    page.appendChild(h2);
   }
 
-  function flipPage(index) {
-    paperSound.play();
-    pages[index].classList.add("flipped");
-    currentPage = index + 1;
-    typeText(currentPage);
+  const textDiv = document.createElement("div");
+  textDiv.classList.add("typing");
+  textDiv.id = `typing-${i}`;
+  page.appendChild(textDiv);
 
-    if (index === 0) {
-      fireworkSound.play();
+  if (i === messages.length - 1) {
+    const img = document.createElement("img");
+    img.src = "lampu.jpg";
+    img.alt = "Lampu Lucu";
+    page.appendChild(img);
+
+    const link = document.createElement("a");
+    link.classList.add("wa-link");
+    link.href = "https://wa.me/628973178104?text=mau%20hadiah%20lampu%20tidur";
+    link.target = "_blank";
+    link.textContent = "Balas via WhatsApp 💌";
+    page.appendChild(link);
+  }
+
+  const controls = document.createElement("div");
+  controls.classList.add("controls");
+
+  if (i > 0) {
+    const btnPrev = document.createElement("button");
+    btnPrev.classList.add("btn-prev");
+    btnPrev.textContent = "⬅️ Kembali";
+    btnPrev.onclick = () => goBack(i);
+    controls.appendChild(btnPrev);
+  }
+
+  if (i < messages.length - 1) {
+    const btnNext = document.createElement("button");
+    btnNext.classList.add("btn-next");
+    btnNext.textContent = "Lanjut ➡️";
+    btnNext.onclick = () => flipPage(i);
+    controls.appendChild(btnNext);
+  }
+
+  page.appendChild(controls);
+  scene.appendChild(page);
+  pages.push(page);
+});
+
+function typeText(index) {
+  const target = document.getElementById(`typing-${index}`);
+  const message = messages[index];
+  let i = 0;
+  target.innerHTML = "";
+
+  function type() {
+    if (i < message.length) {
+      target.innerHTML += message.charAt(i);
+      i++;
+      setTimeout(type, 40);
     }
   }
 
-  function goBack(index) {
-    pages[index - 1].classList.remove("flipped");
-    currentPage = index - 1;
-    typeText(currentPage);
-  }
+  type();
+}
 
-  typeText(0);
+function flipPage(index) {
+  paperSound.play();
+  pages[index].classList.add("flipped");
+  currentPage = index + 1;
+  typeText(currentPage);
+
+  if (index === 0) fireworkSound.play();
+}
+
+function goBack(index) {
+  pages[index - 1].classList.remove("flipped");
+  currentPage = index - 1;
+  typeText(currentPage);
+}
+
+typeText(0);
 </script>
 
 </body>
