@@ -15,7 +15,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: #fff; /* Background default */
+      background-color: #fff;
     }
 
     .scene {
@@ -26,6 +26,7 @@
       max-height: 842px;
       border-radius: 10px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
     }
 
     .page {
@@ -36,7 +37,7 @@
       height: 100%;
       backface-visibility: hidden;
       transform-style: preserve-3d;
-      transition: transform 1s ease-in-out;
+      transition: transform 3s ease-in-out;
       border-radius: 10px;
       padding: 40px;
       display: flex;
@@ -45,12 +46,10 @@
       align-items: center;
       text-align: center;
       color: #333;
-      z-index: 1;
     }
 
     .flipped {
-      transform: rotateY(-180deg);
-      z-index: 0 !important;
+      transform: rotateY(180deg);
     }
 
     .page h1 {
@@ -71,6 +70,9 @@
       min-height: 60px;
       margin-top: 20px;
       color: #fff;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 10px;
+      border-radius: 10px;
     }
 
     .page img {
@@ -101,6 +103,16 @@
     .controls {
       display: flex;
       gap: 20px;
+    }
+
+    .emoticons {
+      font-size: 5rem;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: -1;
+      opacity: 0.1;
     }
 
     @media (max-width: 768px) {
@@ -134,115 +146,131 @@
 <div class="scene" id="scene"></div>
 
 <script>
-const messages = [
-  "Hari ini hari yang spesial banget...",
-  "karena seseorang yang luar biasa lahir di hari ini 💖",
-  "lu hebat bisa ngadepin ortu lu sampe sekarang ✨",
-  "semoga semua mimpi lu tercapai ya, Malika! 💫",
-  "selamat ulang tahun yang ke-15, Malika Al Ghassani! 🎂",
-  "Terima kasih udah jadi kamu yang sekarang. ❤️<br>Kamu pantas dapet segalanya yang indah 🌟"
-];
+  const paperSound = new Audio('https://www.soundjay.com/button/beep-07.wav');
+  const fireworkSound = new Audio('https://www.soundjay.com/button/sounds/beep-07.wav');
 
-const bgColors = [
-  "linear-gradient(to right, #fbc2eb, #a6c1ee)",  // Pink to Blue
-  "linear-gradient(to right, #ffecd2, #fcb69f)",  // Peachy tones
-  "linear-gradient(to right, #d4fc79, #96e6a1)",  // Green and Yellow
-  "linear-gradient(to right, #fbc2eb, #f7b7d1)",  // Soft pink shades
-  "linear-gradient(to right, #f6d365, #fda085)",  // Orange sunset tones
-];
+  const messages = [
+    "Hari ini hari yang spesial banget...",
+    "karena seseorang yang luar biasa lahir di hari ini 💖",
+    "lu hebat bisa ngadepin ortu lu sampe sekarang ✨",
+    "semoga semua mimpi lu tercapai ya, Malika! 💫",
+    "selamat ulang tahun yang ke-15, Malika Al Ghassani! 🎂",
+    "Terima kasih udah jadi kamu yang sekarang. ❤️<br>Kamu pantas dapet segalanya yang indah 🌟"
+  ];
 
-const scene = document.getElementById("scene");
-let currentPage = 0;
-const pages = [];
+  const bgColors = [
+    "linear-gradient(to right, #fbc2eb, #a6c1ee)",
+    "linear-gradient(to right, #ffecd2, #fcb69f)",
+    "linear-gradient(to right, #d4fc79, #96e6a1)",
+    "linear-gradient(to right, #fbc2eb, #f7b7d1)",
+    "linear-gradient(to right, #f6d365, #fda085)",
+    "linear-gradient(to right, #c1dfc4, #deecdd)"
+  ];
 
-messages.forEach((msg, i) => {
-  const page = document.createElement("div");
-  page.classList.add("page");
-  page.style.zIndex = messages.length - i;
-  page.style.background = bgColors[i]; // Change background on each flip
+  const emoticons = ["🎉", "🎂", "🎁", "💖", "🎊", "🌟"];
 
-  if (i === 0) {
-    const h1 = document.createElement("h1");
-    h1.textContent = "Selamat Ulang Tahun 🎉";
-    const h2 = document.createElement("h2");
-    h2.textContent = "Malika Al Ghassani";
-    page.appendChild(h1);
-    page.appendChild(h2);
+  const scene = document.getElementById("scene");
+  let currentPage = 0;
+  const pages = [];
+
+  messages.forEach((msg, i) => {
+    const page = document.createElement("div");
+    page.classList.add("page");
+    page.style.zIndex = messages.length - i;
+    page.style.background = bgColors[i];
+
+    const emoticonDiv = document.createElement("div");
+    emoticonDiv.classList.add("emoticons");
+    emoticonDiv.textContent = emoticons[i];
+    page.appendChild(emoticonDiv);
+
+    if (i === 0) {
+      const h1 = document.createElement("h1");
+      h1.textContent = "Selamat Ulang Tahun 🎉";
+      const h2 = document.createElement("h2");
+      h2.textContent = "Malika Al Ghassani";
+      page.appendChild(h1);
+      page.appendChild(h2);
+    }
+
+    const textDiv = document.createElement("div");
+    textDiv.classList.add("typing");
+    textDiv.id = `typing-${i}`;
+    page.appendChild(textDiv);
+
+    if (i === messages.length - 1) {
+      const img = document.createElement("img");
+      img.src = "lampu.jpg";
+      img.alt = "Lampu Lucu";
+      page.appendChild(img);
+
+      const link = document.createElement("a");
+      link.classList.add("wa-link");
+      link.href = "https://wa.me/628973178104?text=mau%20hadiah%20lampu%20tidur";
+      link.target = "_blank";
+      link.textContent = "Balas via WhatsApp 💌";
+      page.appendChild(link);
+    }
+
+    const controls = document.createElement("div");
+    controls.classList.add("controls");
+
+    if (i > 0) {
+      const btnPrev = document.createElement("button");
+      btnPrev.classList.add("btn-prev");
+      btnPrev.textContent = "⬅️ Kembali";
+      btnPrev.onclick = () => goBack(i);
+      controls.appendChild(btnPrev);
+    }
+
+    if (i < messages.length - 1) {
+      const btnNext = document.createElement("button");
+      btnNext.classList.add("btn-next");
+      btnNext.textContent = "Lanjut ➡️";
+      btnNext.onclick = () => flipPage(i);
+      controls.appendChild(btnNext);
+    }
+
+    page.appendChild(controls);
+    scene.appendChild(page);
+    pages.push(page);
+  });
+
+  function typeText(index) {
+    const target = document.getElementById(`typing-${index}`);
+    const message = messages[index];
+    let i = 0;
+    target.innerHTML = "";
+
+    function type() {
+      if (i < message.length) {
+        target.innerHTML += message.charAt(i);
+        i++;
+        setTimeout(type, 40);
+      }
+    }
+
+    type();
   }
 
-  const textDiv = document.createElement("div");
-  textDiv.classList.add("typing");
-  textDiv.id = `typing-${i}`;
-  page.appendChild(textDiv);
+  function flipPage(index) {
+    paperSound.play();
+    pages[index].classList.add("flipped");
+    currentPage = index + 1;
+    typeText(currentPage);
 
-  if (i === messages.length - 1) {
-    const img = document.createElement("img");
-    img.src = "lampu.jpg";
-    img.alt = "Lampu Lucu";
-    page.appendChild(img);
-
-    const link = document.createElement("a");
-    link.classList.add("wa-link");
-    link.href = "https://wa.me/628973178104?text=mau%20hadiah%20lampu%20tidur";
-    link.target = "_blank";
-    link.textContent = "Balas via WhatsApp 💌";
-    page.appendChild(link);
-  }
-
-  const controls = document.createElement("div");
-  controls.classList.add("controls");
-
-  if (i > 0) {
-    const btnPrev = document.createElement("button");
-    btnPrev.classList.add("btn-prev");
-    btnPrev.textContent = "⬅️ Kembali";
-    btnPrev.onclick = () => goBack(i);
-    controls.appendChild(btnPrev);
-  }
-
-  if (i < messages.length - 1) {
-    const btnNext = document.createElement("button");
-    btnNext.classList.add("btn-next");
-    btnNext.textContent = "Lanjut ➡️";
-    btnNext.onclick = () => flipPage(i);
-    controls.appendChild(btnNext);
-  }
-
-  page.appendChild(controls);
-  scene.appendChild(page);
-  pages.push(page);
-});
-
-function typeText(index) {
-  const target = document.getElementById(`typing-${index}`);
-  const message = messages[index];
-  let i = 0;
-  target.innerHTML = "";
-
-  function type() {
-    if (i < message.length) {
-      target.innerHTML += message.charAt(i);
-      i++;
-      setTimeout(type, 40);
+    if (index === 0) {
+      fireworkSound.play();
     }
   }
 
-  type();
-}
+  function goBack(index) {
+    pages[index - 1].classList.remove("flipped");
+    currentPage = index - 1;
+    typeText(currentPage);
+  }
 
-function flipPage(index) {
-  pages[index].classList.add("flipped");
-  currentPage = index + 1;
-  typeText(currentPage);
-}
-
-function goBack(index) {
-  pages[index - 1].classList.remove("flipped");
-  currentPage = index - 1;
-  typeText(currentPage);
-}
-
-typeText(0);
+  typeText(0);
 </script>
 
 </body>
