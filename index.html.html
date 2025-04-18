@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+      <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
@@ -10,20 +11,20 @@
       margin: 0;
       padding: 0;
       font-family: 'Poppins', sans-serif;
+      overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       background-color: #fff;
-      overflow: hidden;
     }
 
     .scene {
       width: 90%;
       height: 90%;
+      position: relative;
       max-width: 595px;
       max-height: 842px;
-      position: relative;
       border-radius: 10px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       overflow: hidden;
@@ -31,76 +32,68 @@
 
     .page {
       position: absolute;
-      width: 100%;
-      height: 100%;
       top: 0;
       left: 0;
+      width: 100%;
+      height: 100%;
       backface-visibility: hidden;
       transform-style: preserve-3d;
-      transition: transform 2s ease-in-out;
+      transition: transform 3s ease-in-out;
       border-radius: 10px;
       display: flex;
       flex-direction: column;
+      justify-content: start;
       align-items: center;
-      padding: 20px;
+      text-align: center;
+      color: #333;
+      padding: 30px 20px;
       box-sizing: border-box;
-      color: #fff;
     }
 
     .flipped {
       transform: rotateY(180deg);
     }
 
-    .header-wrap {
-      background: #000;
-      padding: 10px 20px;
-      border-radius: 10px;
-      text-align: center;
-      text-shadow: 2px 2px 4px #000;
-      color: #fff;
+    .page h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.5rem;
       margin-bottom: 10px;
     }
 
-    .header-wrap h1 {
-      font-family: 'Pacifico', cursive;
-      font-size: 1.8rem;
-      margin: 0;
-    }
-
-    .header-wrap h2 {
-      font-size: 1rem;
-      margin: 0;
-      font-weight: normal;
+    .page h2 {
+      font-size: 1.2rem;
+      font-weight: 400;
     }
 
     .typing {
-      font-size: 1rem;
-      background-color: rgba(0, 0, 0, 0.3);
+      font-size: 1.2rem;
+      margin-top: 20px;
+      background-color: rgba(0, 0, 0, 0.4);
       padding: 10px 20px;
       border-radius: 10px;
-      margin: 10px 0;
       max-width: 90%;
-      text-align: center;
       color: #fff;
-      text-shadow: 1px 1px 3px #000;
     }
 
-    .controls {
-      margin-top: 10px;
-      display: flex;
-      gap: 10px;
+    .page img {
+      max-width: 250px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      margin: 25px 0;
     }
 
     .btn-prev, .btn-next, .wa-link {
-      padding: 8px 16px;
+      display: block;
+      margin: 10px auto;
+      padding: 12px 24px;
       border: none;
       background: #ff6f91;
       color: #fff;
-      border-radius: 20px;
+      border-radius: 30px;
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: 1rem;
       text-decoration: none;
-      transition: transform 0.3s;
+      transition: transform 0.3s, background 0.3s;
     }
 
     .btn-prev:hover, .btn-next:hover, .wa-link:hover {
@@ -108,54 +101,162 @@
       background: #ff8fab;
     }
 
-    .page img {
-      max-width: 250px;
-      border-radius: 15px;
-      margin: 20px 0;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      justify-content: center;
+      margin-top: auto;
+    }
+
+    .emoticons {
+      font-size: 2rem;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      align-content: space-around;
+      opacity: 0.2;
+    }
+
+    .emoticons span {
+      margin: 5px;
+    }
+
+    .header-wrap {
+  padding: 12px 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  color: #fff;
+  text-shadow: 2px 2px 4px #000; /* SHADOW DI SETIAP HURUF */
+}
+
+
+    @media (max-width: 768px) {
+      .scene {
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        max-height: none;
+      }
+
+      .page {
+        padding: 20px;
+      }
+
+      .page h1 {
+        font-size: 1.8rem;
+      }
+
+      .page h2 {
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
 <body>
+
 <div class="scene" id="scene"></div>
+
 <script>
+const paperSound = new Audio('https://www.soundjay.com/button/beep-07.wav');
+const fireworkSound = new Audio('https://www.soundjay.com/button/sounds/beep-07.wav');
+
 const messages = [
   "Hari ini hari yang spesial banget...",
   "Karena seseorang yang luar biasa lahir di hari ini ",
   "gw tau banget, hidup lu nggak selalu gampang. Lu tumbuh di rumah yang aturannya ketat, semua harus sesuai ekspektasi, harus nurut, harus kuat padahal di dalam hati lu kadang cuma pengen didengar, dimengerti, dan punya ruang buat jadi diri sendiri.",
   "Lu keren banget. Lu bisa berdiri tegak di tengah tekanan yang kayak gitu. Lu bisa tetap jadi diri lu yang baik, yang kuat, yang gak gampang nyerah",
   "Gw tau kadang lu pengen nyerah, pengen kabur dari semuanya, pengen hidup yang lebih bebas dan itu wajar, karena lu juga manusia. Tapi justru dari semua itu, lu tumbuh jadi orang yang luar biasa. Lu nggak keras kepala, tapi lu punya prinsip. Lu nggak rebel, tapi lu punya pendirian. Dan itu powerful banget.",
-  "dan semoga suatu hari nanti, lu bisa punya hidup yang bener-bener lu pengen. Yang bisa lu atur sendiri, yang bisa lu isi dengan ketenangan, kebahagiaan. kalo mau hadiahnya pencet tombol yg dibawah"
+  "dan semoga suatu hari nanti, lu bisa punya hidup yang bener-bener lu pengen. Yang bisa lu atur sendiri, yang bisa lu isi dengan ketenangan, kebahagiaan. kalo mau hadiahnya pencet tombol yg dibawah",
 ];
 
-const headerBgs = ["#fbc2eb", "#fcb69f", "#d4fc79", "#f7b7d1", "#fda085"];
+const bgColors = [
+  "#fbc2eb",  // pink muda
+  "#fcb69f",  // peach
+  "#d4fc79",  // hijau muda
+  "#f7b7d1",  // pink soft
+  "#fda085",  // orange lembut
+  "#8ec5fc"   // biru langit
+];
+
+const headerBgs = [
+  "#fbc2eb",
+  "#fcb69f",
+  "#d4fc79",
+  "#f7b7d1",
+  "#fda085",
+  "#8ec5fc"
+];
+
+
+const emoticons = ["🎉", "🎂", "🎁", "💖", "🎊", "✨"];
+
 const scene = document.getElementById("scene");
-let pages = [];
+let currentPage = 0;
+const pages = [];
 
-messages.forEach((text, i) => {
+messages.forEach((msg, i) => {
   const page = document.createElement("div");
-  page.className = "page";
-  page.style.background = headerBgs[i % headerBgs.length];
+  page.classList.add("page");
   page.style.zIndex = messages.length - i;
+  page.style.backgroundColor = bgColors[i];
 
+  const emoteGrid = document.createElement("div");
+  emoteGrid.classList.add("emoticons");
+  for (let j = 0; j < 50; j++) {
+    const emote = document.createElement("span");
+    emote.textContent = emoticons[i % emoticons.length];
+    emoteGrid.appendChild(emote);
+  }
+  page.appendChild(emoteGrid);
+
+  // Tambahkan header di semua kecuali halaman terakhir
   if (i !== messages.length - 1) {
-    const header = document.createElement("div");
-    header.className = "header-wrap";
-    header.innerHTML = `<h1>Selamat Ulang Tahun 🎉</h1><h2>Malika Al Ghassani</h2>`;
-    page.appendChild(header);
+    const headerWrap = document.createElement("div");
+    headerWrap.classList.add("header-wrap");
+    headerWrap.style.backgroundColor = headerBgs[i];
+
+    const h1 = document.createElement("h1");
+    h1.textContent = "Selamat Ulang Tahun 🎉";
+
+    const h2 = document.createElement("h2");
+    h2.textContent = "Malika Al Ghassani yang ke-15";
+
+    headerWrap.appendChild(h1);
+    headerWrap.appendChild(h2);
+    page.appendChild(headerWrap);
   }
 
-  const message = document.createElement("div");
-  message.className = "typing";
-  message.id = `msg-${i}`;
-  page.appendChild(message);
+  const textDiv = document.createElement("div");
+  textDiv.classList.add("typing");
+  textDiv.id = `typing-${i}`;
+  page.appendChild(textDiv);
+
+  if (i === messages.length - 1) {
+    const img = document.createElement("img");
+    img.src = "lampu.jpg";
+    img.alt = "Lampu Lucu";
+    page.appendChild(img);
+
+    const link = document.createElement("a");
+    link.classList.add("wa-link");
+    link.href = "https://wa.me/628973178104?text=";
+    link.target = "_blank";
+    link.textContent = "pencet kalo mau";
+    page.appendChild(link);
+  }
 
   const controls = document.createElement("div");
-  controls.className = "controls";
+  controls.classList.add("controls");
 
   if (i > 0) {
     const btnPrev = document.createElement("button");
-    btnPrev.className = "btn-prev";
+    btnPrev.classList.add("btn-prev");
     btnPrev.textContent = "⬅️ Kembali";
     btnPrev.onclick = () => goBack(i);
     controls.appendChild(btnPrev);
@@ -163,21 +264,10 @@ messages.forEach((text, i) => {
 
   if (i < messages.length - 1) {
     const btnNext = document.createElement("button");
-    btnNext.className = "btn-next";
+    btnNext.classList.add("btn-next");
     btnNext.textContent = "Lanjut ➡️";
     btnNext.onclick = () => flipPage(i);
     controls.appendChild(btnNext);
-  } else {
-    const img = document.createElement("img");
-    img.src = "lampu.jpg";
-    page.appendChild(img);
-
-    const link = document.createElement("a");
-    link.className = "wa-link";
-    link.href = "https://wa.me/628973178104?text=mau";
-    link.textContent = "Pencet kalo mau";
-    link.target = "_blank";
-    controls.appendChild(link);
   }
 
   page.appendChild(controls);
@@ -185,36 +275,42 @@ messages.forEach((text, i) => {
   pages.push(page);
 });
 
-let current = 0;
 function typeText(index) {
-  const target = document.getElementById(`msg-${index}`);
-  const text = messages[index];
+  const target = document.getElementById(`typing-${index}`);
+  const message = messages[index];
   let i = 0;
-  target.textContent = "";
+  target.innerHTML = "";
 
-  function typing() {
-    if (i < text.length) {
-      target.textContent += text.charAt(i);
+  function type() {
+    if (i < message.length) {
+      target.innerHTML += message.charAt(i);
       i++;
-      setTimeout(typing, 30);
+      setTimeout(type, 40);
     }
   }
-  typing();
+
+  type();
 }
 
-function flipPage(i) {
-  pages[i].classList.add("flipped");
-  current = i + 1;
-  typeText(current);
+function flipPage(index) {
+  paperSound.play();
+  pages[index].classList.add("flipped");
+  currentPage = index + 1;
+  typeText(currentPage);
+
+  if (index === 0) fireworkSound.play();
 }
 
-function goBack(i) {
-  pages[i - 1].classList.remove("flipped");
-  current = i - 1;
-  typeText(current);
+function goBack(index) {
+  pages[index - 1].classList.remove("flipped");
+  currentPage = index - 1;
+  typeText(currentPage);
 }
 
 typeText(0);
 </script>
+
 </body>
 </html>
+
+   
