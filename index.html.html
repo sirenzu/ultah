@@ -10,12 +10,12 @@
       margin: 0;
       padding: 0;
       font-family: 'Poppins', sans-serif;
-      background-color: #ffe; /* Background color */
       overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      background-color: #fff; /* Background default */
     }
 
     .scene {
@@ -24,9 +24,6 @@
       position: relative;
       max-width: 595px;
       max-height: 842px;
-      background-image: url('https://i.ibb.co/v1kg3gs/cute-background.jpg'); /* Ganti dengan URL gambar imut */
-      background-size: cover;
-      background-position: center;
       border-radius: 10px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
@@ -146,7 +143,14 @@ const messages = [
   "Terima kasih udah jadi kamu yang sekarang. ❤️<br>Kamu pantas dapet segalanya yang indah 🌟"
 ];
 
-const bgClasses = ["bubbles", "hearts", "bubbles", "hearts", "bubbles"];
+const bgColors = [
+  "linear-gradient(to right, #fbc2eb, #a6c1ee)",  // Pink to Blue
+  "linear-gradient(to right, #ffecd2, #fcb69f)",  // Peachy tones
+  "linear-gradient(to right, #d4fc79, #96e6a1)",  // Green and Yellow
+  "linear-gradient(to right, #fbc2eb, #f7b7d1)",  // Soft pink shades
+  "linear-gradient(to right, #f6d365, #fda085)",  // Orange sunset tones
+];
+
 const scene = document.getElementById("scene");
 let currentPage = 0;
 const pages = [];
@@ -155,6 +159,7 @@ messages.forEach((msg, i) => {
   const page = document.createElement("div");
   page.classList.add("page");
   page.style.zIndex = messages.length - i;
+  page.style.background = bgColors[i]; // Change background on each flip
 
   if (i === 0) {
     const h1 = document.createElement("h1");
