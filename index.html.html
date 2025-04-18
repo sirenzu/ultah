@@ -1,5 +1,4 @@
-
-      <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
@@ -106,7 +105,7 @@
       flex-direction: column;
       gap: 10px;
       justify-content: center;
-      margin-top: auto;
+      margin-top: 20px;
     }
 
     .emoticons {
@@ -128,13 +127,12 @@
     }
 
     .header-wrap {
-  padding: 12px 20px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  color: #fff;
-  text-shadow: 2px 2px 4px #000; /* SHADOW DI SETIAP HURUF */
-}
-
+      padding: 12px 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      color: #fff;
+      text-shadow: 2px 2px 4px #000;
+    }
 
     @media (max-width: 768px) {
       .scene {
@@ -171,28 +169,17 @@ const messages = [
   "Karena seseorang yang luar biasa lahir di hari ini ",
   "gw tau banget, hidup lu nggak selalu gampang. Lu tumbuh di rumah yang aturannya ketat, semua harus sesuai ekspektasi, harus nurut, harus kuat padahal di dalam hati lu kadang cuma pengen didengar, dimengerti, dan punya ruang buat jadi diri sendiri.",
   "Lu keren banget. Lu bisa berdiri tegak di tengah tekanan yang kayak gitu. Lu bisa tetap jadi diri lu yang baik, yang kuat, yang gak gampang nyerah",
-  "Gw tau kadang lu pengen nyerah, pengen kabur dari semuanya, pengen hidup yang lebih bebas dan itu wajar, karena lu juga manusia. Tapi justru dari semua itu, lu tumbuh jadi orang yang luar biasa. Lu nggak keras kepala, tapi lu punya prinsip. Lu nggak rebel, tapi lu punya pendirian. Dan itu powerful banget.",
+  "Gw tau kadang lu pengen nyerah, pengen kabur dari semuanya, pengen hidup yang lebih bebas dan itu wajar, karena lu juga manusia. Tapi justru dari semua itu, lu tumbuh jadi orang yang luar biasa. Lu nggak keras kepala, tapi lu punya prinsip, lu punya pendirian. Dan itu powerful banget.",
   "dan semoga suatu hari nanti, lu bisa punya hidup yang bener-bener lu pengen. Yang bisa lu atur sendiri, yang bisa lu isi dengan ketenangan, kebahagiaan. kalo mau hadiahnya pencet tombol yg dibawah",
 ];
 
 const bgColors = [
-  "#fbc2eb",  // pink muda
-  "#fcb69f",  // peach
-  "#d4fc79",  // hijau muda
-  "#f7b7d1",  // pink soft
-  "#fda085",  // orange lembut
-  "#8ec5fc"   // biru langit
+  "#fbc2eb", "#fcb69f", "#d4fc79", "#f7b7d1", "#fda085", "#8ec5fc"
 ];
 
 const headerBgs = [
-  "#fbc2eb",
-  "#fcb69f",
-  "#d4fc79",
-  "#f7b7d1",
-  "#fda085",
-  "#8ec5fc"
+  "#fbc2eb", "#fcb69f", "#d4fc79", "#f7b7d1", "#fda085", "#8ec5fc"
 ];
-
 
 const emoticons = ["🎉", "🎂", "🎁", "💖", "🎊", "✨"];
 
@@ -215,7 +202,6 @@ messages.forEach((msg, i) => {
   }
   page.appendChild(emoteGrid);
 
-  // Tambahkan header di semua kecuali halaman terakhir
   if (i !== messages.length - 1) {
     const headerWrap = document.createElement("div");
     headerWrap.classList.add("header-wrap");
@@ -297,7 +283,6 @@ function flipPage(index) {
   pages[index].classList.add("flipped");
   currentPage = index + 1;
   typeText(currentPage);
-
   if (index === 0) fireworkSound.play();
 }
 
@@ -312,5 +297,3 @@ typeText(0);
 
 </body>
 </html>
-
-   
