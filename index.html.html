@@ -74,14 +74,7 @@
       color: #fff;
     }
 
-    .page img {
-      max-width: 250px;
-      border-radius: 15px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      margin: 25px 0;
-    }
-
-    .btn-prev, .btn-next, .wa-link {
+    .btn-prev, .btn-next {
       display: block;
       margin: 10px auto;
       padding: 12px 24px;
@@ -91,11 +84,10 @@
       border-radius: 30px;
       cursor: pointer;
       font-size: 1rem;
-      text-decoration: none;
       transition: transform 0.3s, background 0.3s;
     }
 
-    .btn-prev:hover, .btn-next:hover, .wa-link:hover {
+    .btn-prev:hover, .btn-next:hover {
       transform: scale(1.05);
       background: #ff8fab;
     }
@@ -170,7 +162,7 @@ const messages = [
   "gw tau banget, hidup lu nggak selalu gampang. Lu tumbuh di rumah yang aturannya ketat, semua harus sesuai ekspektasi, harus nurut, harus kuat padahal di dalam hati lu kadang cuma pengen didengar, dimengerti, dan punya ruang buat jadi diri sendiri.",
   "Lu keren banget. Lu bisa berdiri tegak di tengah tekanan yang kayak gitu. Lu bisa tetap jadi diri lu yang baik, yang kuat, yang gak gampang nyerah",
   "Gw tau kadang lu pengen nyerah, pengen kabur dari semuanya, pengen hidup yang lebih bebas dan itu wajar, karena lu juga manusia. Tapi justru dari semua itu, lu tumbuh jadi orang yang luar biasa. Lu nggak keras kepala, tapi lu punya prinsip, lu punya pendirian. Dan itu powerful banget.",
-  "dan semoga suatu hari nanti, lu bisa punya hidup yang bener-bener lu pengen. Yang bisa lu atur sendiri, yang bisa lu isi dengan ketenangan, kebahagiaan. kalo mau hadiahnya pencet tombol yg dibawah",
+  "dan semoga suatu hari nanti, lu bisa punya hidup yang bener-bener lu pengen. Yang bisa lu atur sendiri, yang bisa lu isi dengan ketenangan, kebahagiaan."
 ];
 
 const bgColors = [
@@ -222,20 +214,6 @@ messages.forEach((msg, i) => {
   textDiv.classList.add("typing");
   textDiv.id = `typing-${i}`;
   page.appendChild(textDiv);
-
-  if (i === messages.length - 1) {
-    const img = document.createElement("img");
-    img.src = "lampu.jpg";
-    img.alt = "Lampu Lucu";
-    page.appendChild(img);
-
-    const link = document.createElement("a");
-    link.classList.add("wa-link");
-    link.href = "https://wa.me/628973178104?text=MAU";
-    link.target = "_blank";
-    link.textContent = "pencet kalo mau";
-    page.appendChild(link);
-  }
 
   const controls = document.createElement("div");
   controls.classList.add("controls");
